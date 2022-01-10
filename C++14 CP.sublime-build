@@ -1,0 +1,27 @@
+//more variants to be added
+//config input and output
+
+{
+  "cmd": ["bash", "-c", "g++ -Wall -std=c++14 '${file}' -o '${file_base_name}.out' && './${file_base_name}.out' < inputf.txt > outputf.txt"],
+  "file_regex": "^(..[^:]*):([0-9]+):?([0-9]+)?:? (.*)$",
+  "working_dir": "${folder}",
+  "selector": "source.c++",
+  "variants":[
+    {
+      "name": "Compile",
+      "cmd": ["g++", "-Wall", "-std=c++14", "${file}", "-o", "${file_base_name}.out"],
+    },
+    {
+      "name": "Run",
+      "cmd": ["bash", "-c", "time './${file_base_name}.out' < inputf.txt > outputf.txt"],
+    },
+    {
+      "name": "Clear",
+      "cmd": ["bash", "-c", "rm ${file_base_name}.out"],
+    },
+    {
+      "name": "Clear all",
+      "cmd": ["bash", "-c", "rm *.out"],
+    },
+  ]
+}
