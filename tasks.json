@@ -1,0 +1,101 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cp build",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "windows": {
+                "command": "g++.exe",
+                "args": [
+                    // "-pipe",
+                    // // "-fsanitize=signed-integer-overflow,undefined", Causes compilation error in Windows
+                    // "-g",
+                    // "-march=native",
+                    // // "-O2", This optimization causes errors while Debugging
+                    // // "-std=c++17", Causes compilation error in Windows
+                    // "-Wall",
+                    // "-Wshadow",
+                    // "-Wno-unused-result",
+                    "${file}",
+                    "-o",
+                    "${fileBasenameNoExtension}.exe"
+                ]
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                  "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                  "file": 1,
+                  "line": 2,
+                  "column": 3,
+                  "severity": 4,
+                  "message": 5,
+                }
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            },
+            "group": "build",
+        },
+        {
+            "label": "cp run",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "bash",
+                    "args": ["-c"],
+                },
+            },
+            "windows": {
+                "command": "time ./${fileBasenameNoExtension}.exe < inputf.txt > outputf.txt",
+                "args": [""],
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "cp build and run",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn":[
+                "cp build",
+                "cp run"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "clear",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+            },
+            "command": "rm *.exe",
+            "group": "build"
+        },
+    ]
+}
